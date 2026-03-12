@@ -1,0 +1,32 @@
+# Build outputs
+/build/
+/build-gcc/
+/build-*/
+/out/
+/bin/
+
+# IDE files
+/.vs/
+/.vscode/
+/.idea/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# CMake
+CMakeUserPresets.json
+CMakeCache.txt
+cmake_install.cmake
+compile_commands.json
+/CMakeFiles/
+
+# Platform binaries
+*.obj
+*.o
+*.pdb
+*.ilk
+*.dll
+*.so
+*.dylib
+*.exe

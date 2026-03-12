@@ -1,0 +1,15 @@
+id=signal_boost
+title=Signal Boost
+description=Read one value from input port 0, add five, and send the result to output port 1.
+max_cycles=32
+memory_words=64
+input=7
+expected=12
+allowed=in,add,out,halt
+---
+; Signal Boost starter program
+; Read from input, add five, emit the result.
+IN A, 0
+ADD A, 5
+OUT 1, A
+HALT

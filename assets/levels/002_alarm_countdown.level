@@ -1,0 +1,20 @@
+id=alarm_countdown
+title=Alarm Countdown
+description=Emit a countdown from the input value to zero, one number per output.
+max_cycles=96
+memory_words=64
+input=3
+expected=3,2,1,0
+allowed=in,out,cmp,jz,sub,jmp,halt
+---
+; Alarm Countdown starter program
+; Output the current count and stop after reaching zero.
+IN A, 0
+loop:
+OUT 1, A
+CMP A, 0
+JZ done
+SUB A, 1
+JMP loop
+done:
+HALT
