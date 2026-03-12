@@ -45,7 +45,7 @@ class Renderer
 public:
     void resize(int width, int height);
     void beginFrame(const Theme& theme);
-    void endFrame(bool crtEnabled, bool scanlinesEnabled, bool curvatureEnabled);
+    void endFrame(bool crtEnabled, bool scanlinesEnabled);
 
     void drawRect(const Rect& rect, const Color& color) const;
     void drawOutline(const Rect& rect, const Color& color, float thickness = 1.0f) const;
@@ -59,7 +59,8 @@ public:
 
 private:
     void drawScanlines(const Theme& theme) const;
-    void drawCurvatureMask() const;
+    void drawGlow(const Theme& theme) const;
+    void drawVignette(const Theme& theme) const;
 
     int width_ = 1280;
     int height_ = 720;

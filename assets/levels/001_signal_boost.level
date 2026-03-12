@@ -6,9 +6,18 @@ memory_words=64
 input=7
 expected=12
 allowed=in,add,out,halt
+---briefing---
+Welcome to your first Helix Relay maintenance contract. A field repeater is alive, but its signal amplifier routine dropped into safe mode after a failed patch.
+
+Your job is simple: read one value from input port 0, add five, and send the repaired result to output port 1. Use comments beginning with ';' to explain your work, and use help commands if you get lost.
+---tutorial---
+You are a junior systems programmer at Helix Relay Corporation.
+The editor holds your assembly source.
+The console accepts commands like help, assemble, run, and step.
+The inspector shows registers, I/O, trace, and touched memory.
+---success---
+Signal path restored. Helix Relay has logged your first successful field recovery.
 ---
-; Signal Boost starter program
-; Read from input, add five, emit the result.
 IN A, 0
 ADD A, 5
 OUT 1, A

@@ -16,6 +16,10 @@ struct LevelDefinition
     std::vector<std::string> allowedInstructions;
     std::vector<std::uint16_t> inputValues;
     std::vector<std::uint16_t> expectedValues;
+    std::string briefing;
+    std::string tutorialText;
+    std::string hintText;
+    std::string successText;
     std::string starterSource;
 };
 

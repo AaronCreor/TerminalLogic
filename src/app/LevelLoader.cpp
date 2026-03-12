@@ -69,31 +69,82 @@ std::optional<LevelDefinition> parseLevelFile(const std::filesystem::path& path,
 
     LevelDefinition level;
     std::ostringstream starter;
-    bool inStarterSource = false;
+    std::ostringstream tutorial;
+    std::ostringstream hint;
+    std::ostringstream briefing;
+    std::ostringstream success;
+    enum class Section
+    {
+        Metadata,
+        Source,
+        Tutorial,
+        Hint,
+        Briefing,
+        Success,
+    };
+    Section section = Section::Metadata;
     std::string line;
     int lineNumber = 0;
 
     while (std::getline(input, line))
     {
         ++lineNumber;
-        if (inStarterSource)
+        const std::string trimmed = trim(line);
+        if (trimmed == "---")
         {
-            starter << line;
-            if (!input.eof())
-            {
-                starter << '\n';
-            }
+            section = Section::Source;
+            continue;
+        }
+        if (trimmed == "---tutorial---")
+        {
+            section = Section::Tutorial;
+            continue;
+        }
+        if (trimmed == "---hint---")
+        {
+            section = Section::Hint;
+            continue;
+        }
+        if (trimmed == "---briefing---")
+        {
+            section = Section::Briefing;
+            continue;
+        }
+        if (trimmed == "---success---")
+        {
+            section = Section::Success;
             continue;
         }
 
-        const std::string trimmed = trim(line);
-        if (trimmed.empty())
+        if (section != Section::Metadata)
         {
+            std::ostringstream* destination = &starter;
+            if (section == Section::Tutorial)
+            {
+                destination = &tutorial;
+            }
+            else if (section == Section::Hint)
+            {
+                destination = &hint;
+            }
+            else if (section == Section::Briefing)
+            {
+                destination = &briefing;
+            }
+            else if (section == Section::Success)
+            {
+                destination = &success;
+            }
+
+            *destination << line;
+            if (!input.eof())
+            {
+                *destination << '\n';
+            }
             continue;
         }
-        if (trimmed == "---")
+        if (trimmed.empty())
         {
-            inStarterSource = true;
             continue;
         }
 
@@ -147,6 +198,10 @@ std::optional<LevelDefinition> parseLevelFile(const std::filesystem::path& path,
     }
 
     level.starterSource = starter.str();
+    level.tutorialText = tutorial.str();
+    level.hintText = hint.str();
+    level.briefing = briefing.str();
+    level.successText = success.str();
 
     if (level.id.empty() || level.title.empty())
     {

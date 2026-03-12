@@ -1,8 +1,10 @@
 #include "render/Renderer.h"
 
+#include <SDL2/SDL.h>
 #include <SDL2/SDL_opengl.h>
 
 #include <array>
+#include <cmath>
 #include <cstdint>
 
 namespace
@@ -115,15 +117,16 @@ void Renderer::beginFrame(const Theme& theme)
     glEnd();
 }
 
-void Renderer::endFrame(bool crtEnabled, bool scanlinesEnabled, bool curvatureEnabled)
+void Renderer::endFrame(bool crtEnabled, bool scanlinesEnabled)
 {
+    if (crtEnabled)
+    {
+        drawGlow(currentTheme_);
+        drawVignette(currentTheme_);
+    }
     if (crtEnabled && scanlinesEnabled)
     {
         drawScanlines(currentTheme_);
-    }
-    if (crtEnabled && curvatureEnabled)
-    {
-        drawCurvatureMask();
     }
 }
 
@@ -190,24 +193,26 @@ void Renderer::drawText(float x, float y, const std::string& text, float scale, 
 
 void Renderer::drawScanlines(const Theme& theme) const
 {
-    const Color lineColor{theme.backgroundBottom.r, theme.backgroundBottom.g, theme.backgroundBottom.b, 0.16f};
-    for (int y = 0; y < height_; y += 4)
+    const Color lineColor{theme.backgroundBottom.r, theme.backgroundBottom.g, theme.backgroundBottom.b, 0.24f};
+    for (int y = 0; y < height_; y += 3)
     {
         drawRect({0.0f, static_cast<float>(y), static_cast<float>(width_), 1.0f}, lineColor);
     }
 }
 
-void Renderer::drawCurvatureMask() const
+void Renderer::drawGlow(const Theme& theme) const
 {
-    const Color mask{0.0f, 0.0f, 0.0f, 0.20f};
-    drawRect({0.0f, 0.0f, static_cast<float>(width_), 32.0f}, mask);
-    drawRect({0.0f, static_cast<float>(height_ - 32), static_cast<float>(width_), 32.0f}, mask);
-    drawRect({0.0f, 0.0f, 24.0f, static_cast<float>(height_)}, mask);
-    drawRect({static_cast<float>(width_ - 24), 0.0f, 24.0f, static_cast<float>(height_)}, mask);
+    const Color glowTop{theme.accent.r, theme.accent.g, theme.accent.b, 0.05f};
+    const Color glowBottom{theme.text.r, theme.text.g, theme.text.b, 0.03f};
+    drawRect({0.0f, 0.0f, static_cast<float>(width_), 16.0f}, glowTop);
+    drawRect({0.0f, static_cast<float>(height_ - 16), static_cast<float>(width_), 16.0f}, glowBottom);
+}
 
-    const Color corner{0.0f, 0.0f, 0.0f, 0.30f};
-    drawRect({0.0f, 0.0f, 48.0f, 48.0f}, corner);
-    drawRect({static_cast<float>(width_ - 48), 0.0f, 48.0f, 48.0f}, corner);
-    drawRect({0.0f, static_cast<float>(height_ - 48), 48.0f, 48.0f}, corner);
-    drawRect({static_cast<float>(width_ - 48), static_cast<float>(height_ - 48), 48.0f, 48.0f}, corner);
+void Renderer::drawVignette(const Theme& theme) const
+{
+    const Color edge{theme.backgroundTop.r, theme.backgroundTop.g, theme.backgroundTop.b, 0.16f};
+    drawRect({0.0f, 0.0f, static_cast<float>(width_), 22.0f}, edge);
+    drawRect({0.0f, static_cast<float>(height_ - 22), static_cast<float>(width_), 22.0f}, edge);
+    drawRect({0.0f, 0.0f, 18.0f, static_cast<float>(height_)}, edge);
+    drawRect({static_cast<float>(width_ - 18), 0.0f, 18.0f, static_cast<float>(height_)}, edge);
 }

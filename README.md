@@ -1,6 +1,6 @@
-# AsmLab
+# Terminal Core
 
-AsmLab is the first construction pass for a retro-styled assembly puzzle game built in C++. The current scaffold includes:
+Terminal Core is the first construction pass for a retro-styled assembly puzzle game built in C++. The current scaffold includes:
 
 - a clean multiplatform `CMake` project
 - an `SDL2` + `OpenGL` application shell
@@ -32,7 +32,6 @@ This is an early foundation build intended to validate the project structure, VM
 - `theme amber|green`
 - `crt on|off`
 - `scanlines on|off`
-- `curvature on|off`
 - `quit`
 
 ## Dependencies
@@ -58,10 +57,10 @@ cmake --build build --config Release
 Run:
 
 ```powershell
-./build/bin/Release/asmlab.exe
+./build/bin/Release/terminal_core.exe
 ```
 
-Depending on your generator, the executable may also appear under `build/bin/asmlab.exe`.
+Depending on your generator, the executable may also appear under `build/bin/terminal_core.exe`.
 
 ## Build on Linux
 
@@ -76,7 +75,7 @@ Then build:
 ```bash
 cmake -S . -B build
 cmake --build build -j
-./build/bin/asmlab
+./build/bin/terminal_core
 ```
 
 ## Project layout
@@ -90,6 +89,5 @@ cmake --build build -j
 
 ## Notes
 
-- The current CRT curvature effect is a lightweight first-pass mask rather than a full screen-space distortion shader.
 - The VM is intentionally small and deterministic so it can become the single source of truth for gameplay, scoring, and editor playtests.
 - Steamworks is not yet wired into the runtime. The project is structured so it can be added behind a platform adapter later.

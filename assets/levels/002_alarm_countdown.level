@@ -6,6 +6,14 @@ memory_words=64
 input=3
 expected=3,2,1,0
 allowed=in,out,cmp,jz,sub,jmp,halt
+---briefing---
+An alarm relay in a remote switching yard is stuck in a countdown loop after a bad overnight deployment.
+
+Emit a countdown from the input value to zero, one number per output. This contract expects you to read state changes in the inspector and use labels to build a loop.
+---hint---
+Read the input once, output A, compare against zero, then loop until the counter reaches zero.
+---success---
+Alarm countdown synchronized. The yard is back under automatic control.
 ---
 ; Alarm Countdown starter program
 ; Output the current count and stop after reaching zero.
